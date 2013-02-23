@@ -1,18 +1,63 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,WebSharper,Seq,Operators,Website,Password,String,Arrays,Strings,List,Math,Number,Unchecked,SettingsFormlet,Client,Settings,Formlet,Controls,Enhance,Data,Formlet1,jQuery;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Website,Password,Settings,WebSharper,Seq,Operators,List,Math,Number,Unchecked,SettingsFormlet,Client,Formlet,Data,Formlet1,Enhance,String,jQuery,Controls;
  Runtime.Define(Global,{
   Website:{
    Password:{
+    Settings:Runtime.Class({},{
+     Create:function(length,upperCase,numbers,other)
+     {
+      return Runtime.New(Settings,{
+       Length:length,
+       UpperCase:upperCase,
+       Numbers:numbers,
+       Other:other
+      });
+     }
+    }),
     alpha:Runtime.Field(function()
     {
      return Seq.toList(Operators.range(97,122));
     }),
+    charStrength:function(_arg1)
+    {
+     var activePatternResult;
+     activePatternResult=Password["|Alpha|Upper|Number|Punct|Other|"](_arg1);
+     if(activePatternResult.$==1)
+      {
+       return 26;
+      }
+     else
+      {
+       if(activePatternResult.$==2)
+        {
+         return 9;
+        }
+       else
+        {
+         if(activePatternResult.$==3)
+          {
+           return 17;
+          }
+         else
+          {
+           if(activePatternResult.$==4)
+            {
+             return 17;
+            }
+           else
+            {
+             return 26;
+            }
+          }
+        }
+      }
+    },
     generate:function(chars,length)
     {
      var _chars_;
      _chars_=Password.shuffle(chars);
-     return Seq.toArray(Seq.delay(function()
+     return Seq.toList(Seq.delay(function()
      {
       return Seq.collect(function()
       {
@@ -22,18 +67,21 @@
       },Operators.range(1,length));
      }));
     },
-    "generate'":function(forceUpperCase,forceNumbers,forcePunctuation,length)
+    "generate'":function(settings)
     {
-     var chars,x,x1,f,mapping,f1;
+     var useUpperCase,useNumbers,useOther,chars,length;
+     useUpperCase=settings.UpperCase;
+     useNumbers=settings.Numbers;
+     useOther=settings.Other;
      chars=Seq.toList(Seq.delay(function()
      {
       return Seq.append(Password.alpha(),Seq.delay(function()
       {
-       return Seq.append(forceUpperCase?Password.upperCase():Seq.empty(),Seq.delay(function()
+       return Seq.append(useUpperCase?Password.upperCase():Seq.empty(),Seq.delay(function()
        {
-        return Seq.append(forceNumbers?Password.numbers():Seq.empty(),Seq.delay(function()
+        return Seq.append(useNumbers?Password.numbers():Seq.empty(),Seq.delay(function()
         {
-         if(forcePunctuation)
+         if(useOther)
           {
            return Password.punctuation();
           }
@@ -45,18 +93,8 @@
        }));
       }));
      }));
-     x=(x1=Password.generate(chars,length),(f=(mapping=function(value)
-     {
-      return String.fromCharCode(value);
-     },function(array)
-     {
-      return Arrays.map(mapping,array);
-     }),f(x1)));
-     f1=function(strings)
-     {
-      return Strings.concat("",strings);
-     };
-     return f1(x);
+     length=settings.Length;
+     return Password.generate(chars,length);
     },
     numbers:Runtime.Field(function()
     {
@@ -113,63 +151,185 @@
       }));
      }));
     },
+    strength:function(password)
+    {
+     var x,x1,f,f1,f3;
+     x=(x1=(f=function(_arg1)
+     {
+      return Password.charStrength(_arg1);
+     },Seq.sumBy(f,password)),(f1=function(x2)
+     {
+      var x3,value,f2;
+      x3=(value=Number(x2),Math.log(value))*(Number(password.get_Length())/Math.log(2));
+      f2=function(value1)
+      {
+       return Math.floor(value1);
+      };
+      return f2(x3);
+     },f1(x1)));
+     f3=function(_arg1)
+     {
+      var activePatternResult;
+      activePatternResult=Password["|Weak|Medium|Strong|Best|"](_arg1);
+      if(activePatternResult.$==1)
+       {
+        return{
+         $:1
+        };
+       }
+      else
+       {
+        if(activePatternResult.$==2)
+         {
+          return{
+           $:2
+          };
+         }
+        else
+         {
+          if(activePatternResult.$==3)
+           {
+            return{
+             $:3
+            };
+           }
+          else
+           {
+            return{
+             $:0
+            };
+           }
+         }
+       }
+     };
+     return f3(x);
+    },
     upperCase:Runtime.Field(function()
     {
      return Seq.toList(Operators.range(65,90));
-    })
+    }),
+    "|Alpha|Upper|Number|Punct|Other|":function(c)
+    {
+     var x,f,predicate,x2,f1,predicate1,x3,f2,predicate2,x4,f3,predicate3;
+     if(x=Password.alpha(),(f=(predicate=function(x1)
+     {
+      return x1===c;
+     },function(list)
+     {
+      return Seq.exists(predicate,list);
+     }),f(x)))
+      {
+       return{
+        $:0,
+        $0:null
+       };
+      }
+     else
+      {
+       if(x2=Password.upperCase(),(f1=(predicate1=function(x1)
+       {
+        return x1===c;
+       },function(list)
+       {
+        return Seq.exists(predicate1,list);
+       }),f1(x2)))
+        {
+         return{
+          $:1,
+          $0:null
+         };
+        }
+       else
+        {
+         if(x3=Password.numbers(),(f2=(predicate2=function(x1)
+         {
+          return x1===c;
+         },function(list)
+         {
+          return Seq.exists(predicate2,list);
+         }),f2(x3)))
+          {
+           return{
+            $:2,
+            $0:null
+           };
+          }
+         else
+          {
+           if(x4=Password.punctuation(),(f3=(predicate3=function(x1)
+           {
+            return x1===c;
+           },function(list)
+           {
+            return Seq.exists(predicate3,list);
+           }),f3(x4)))
+            {
+             return{
+              $:3,
+              $0:null
+             };
+            }
+           else
+            {
+             return{
+              $:4,
+              $0:null
+             };
+            }
+          }
+        }
+      }
+    },
+    "|Weak|Medium|Strong|Best|":function(x)
+    {
+     if(x>=128)
+      {
+       return{
+        $:3,
+        $0:null
+       };
+      }
+     else
+      {
+       if(x<128?x>=64:false)
+        {
+         return{
+          $:2,
+          $0:null
+         };
+        }
+       else
+        {
+         if(x<64?x>=56:false)
+          {
+           return{
+            $:1,
+            $0:null
+           };
+          }
+         else
+          {
+           return{
+            $:0,
+            $0:null
+           };
+          }
+        }
+      }
+    }
    },
    SettingsFormlet:{
     Client:{
-     Settings:Runtime.Class({},{
-      Create:function(length,upperCase,numbers,other)
-      {
-       return Runtime.New(Settings,{
-        Length:length,
-        UpperCase:upperCase,
-        Numbers:numbers,
-        Other:other
-       });
-      }
-     }),
      SettingsFormletViewer:Runtime.Class({
       get_Body:function()
       {
-       return Client.main();
+       return Client.formlet();
       }
      }),
-     lengthList:Runtime.Field(function()
+     form:Runtime.Field(function()
      {
-      var x,f,mapping;
-      x=Seq.toList(Operators.range(6,32));
-      f=(mapping=function(x1)
-      {
-       return[Global.String(x1),x1];
-      },function(list)
-      {
-       return List.map(mapping,list);
-      });
-      return f(x);
-     }),
-     main:function()
-     {
-      var lengthSelect,x,f,upperCaseCheckbox,x1,f1,numbersCheckbox,x2,f2,otherCheckbox,x3,f3,form,x4,x5,x6,f4,f5;
-      lengthSelect=(x=Controls.Select(8,Client.lengthList()),(f=function(formlet)
-      {
-       return Enhance.WithTextLabel("Length",formlet);
-      },f(x)));
-      upperCaseCheckbox=(x1=Controls.Checkbox(false),(f1=function(formlet)
-      {
-       return Enhance.WithTextLabel("Upper Case",formlet);
-      },f1(x1)));
-      numbersCheckbox=(x2=Controls.Checkbox(false),(f2=function(formlet)
-      {
-       return Enhance.WithTextLabel("Numbers",formlet);
-      },f2(x2)));
-      otherCheckbox=(x3=Controls.Checkbox(false),(f3=function(formlet)
-      {
-       return Enhance.WithTextLabel("Other",formlet);
-      },f3(x3)));
-      form=(x4=(x5=Data.$(Data.$(Data.$(Data.$((x6=function(length)
+      var x,x1,x2,f,f1;
+      x=(x1=Data.$(Data.$(Data.$(Data.$((x2=function(length)
       {
        return function(upperCase)
        {
@@ -187,51 +347,137 @@
          };
         };
        };
-      },Formlet1.Return(x6)),lengthSelect),upperCaseCheckbox),numbersCheckbox),otherCheckbox),(f4=function(formlet)
+      },Formlet1.Return(x2)),Client.lengthSelect()),Client.upperCaseCheckbox()),Client.numbersCheckbox()),Client.otherCheckbox()),(f=function(formlet)
       {
        return Enhance.WithSubmitAndResetButtons(formlet);
-      },f4(x5))),(f5=function(formlet)
+      },f(x1)));
+      f1=function(formlet)
       {
        return Enhance.WithFormContainer(formlet);
-      },f5(x4)));
+      };
+      return f1(x);
+     }),
+     formlet:Runtime.Field(function()
+     {
       return Formlet1.Run(function(settings)
       {
-       var password;
-       password=Password["generate'"](settings.UpperCase,settings.Numbers,settings.Other,settings.Length);
-       return jQuery("#password").attr("value",password);
-      },form);
-     }
+       var password,_password_,f,folder,patternInput,x1,matchValue,f1,width,strength,cssClass;
+       password=Password["generate'"](settings);
+       _password_=(f=(folder=function(x)
+       {
+        return function(y)
+        {
+         return x+String.fromCharCode(y);
+        };
+       },function(list)
+       {
+        return Seq.fold(folder,"",list);
+       }),f(password));
+       patternInput=(x1=(matchValue=Password.strength(password),matchValue.$==1?["Medium",50,"progress progress-warning"]:matchValue.$==2?["Strong",75,"progress progress-success"]:matchValue.$==3?["Best",100,"progress progress-info"]:["Weak",25,"progress progress-danger"]),(f1=Runtime.Tupled(function(tupledArg)
+       {
+        var x,y,z;
+        x=tupledArg[0];
+        y=tupledArg[1];
+        z=tupledArg[2];
+        return[x,"width: "+Global.String(y)+"%;",z];
+       }),f1(x1)));
+       width=patternInput[1];
+       strength=patternInput[0];
+       cssClass=patternInput[2];
+       jQuery("#password").attr("value",_password_);
+       jQuery("#strengthLabel").text("Strength: "+strength);
+       jQuery("#progressDiv").attr("class",cssClass);
+       return jQuery("#progress").attr("style",width);
+      },Client.form());
+     }),
+     lengthList:Runtime.Field(function()
+     {
+      var x,f,mapping;
+      x=Seq.toList(Operators.range(6,32));
+      f=(mapping=function(x1)
+      {
+       return[Global.String(x1),x1];
+      },function(list)
+      {
+       return List.map(mapping,list);
+      });
+      return f(x);
+     }),
+     lengthSelect:Runtime.Field(function()
+     {
+      var x,f;
+      x=Controls.Select(8,Client.lengthList());
+      f=function(formlet)
+      {
+       return Enhance.WithTextLabel("Length",formlet);
+      };
+      return f(x);
+     }),
+     numbersCheckbox:Runtime.Field(function()
+     {
+      var x,f;
+      x=Controls.Checkbox(false);
+      f=function(formlet)
+      {
+       return Enhance.WithTextLabel("Numbers",formlet);
+      };
+      return f(x);
+     }),
+     otherCheckbox:Runtime.Field(function()
+     {
+      var x,f;
+      x=Controls.Checkbox(false);
+      f=function(formlet)
+      {
+       return Enhance.WithTextLabel("Other",formlet);
+      };
+      return f(x);
+     }),
+     upperCaseCheckbox:Runtime.Field(function()
+     {
+      var x,f;
+      x=Controls.Checkbox(false);
+      f=function(formlet)
+      {
+       return Enhance.WithTextLabel("Upper Case",formlet);
+      };
+      return f(x);
+     })
     }
    }
   }
  });
  Runtime.OnInit(function()
  {
+  Website=Runtime.Safe(Global.Website);
+  Password=Runtime.Safe(Website.Password);
+  Settings=Runtime.Safe(Password.Settings);
   WebSharper=Runtime.Safe(Global.IntelliFactory.WebSharper);
   Seq=Runtime.Safe(WebSharper.Seq);
   Operators=Runtime.Safe(WebSharper.Operators);
-  Website=Runtime.Safe(Global.Website);
-  Password=Runtime.Safe(Website.Password);
-  String=Runtime.Safe(Global.String);
-  Arrays=Runtime.Safe(WebSharper.Arrays);
-  Strings=Runtime.Safe(WebSharper.Strings);
   List=Runtime.Safe(WebSharper.List);
   Math=Runtime.Safe(Global.Math);
   Number=Runtime.Safe(Global.Number);
   Unchecked=Runtime.Safe(WebSharper.Unchecked);
   SettingsFormlet=Runtime.Safe(Website.SettingsFormlet);
   Client=Runtime.Safe(SettingsFormlet.Client);
-  Settings=Runtime.Safe(Client.Settings);
   Formlet=Runtime.Safe(WebSharper.Formlet);
-  Controls=Runtime.Safe(Formlet.Controls);
-  Enhance=Runtime.Safe(Formlet.Enhance);
   Data=Runtime.Safe(Formlet.Data);
   Formlet1=Runtime.Safe(Formlet.Formlet);
-  return jQuery=Runtime.Safe(Global.jQuery);
+  Enhance=Runtime.Safe(Formlet.Enhance);
+  String=Runtime.Safe(Global.String);
+  jQuery=Runtime.Safe(Global.jQuery);
+  return Controls=Runtime.Safe(Formlet.Controls);
  });
  Runtime.OnLoad(function()
  {
+  Client.upperCaseCheckbox();
+  Client.otherCheckbox();
+  Client.numbersCheckbox();
+  Client.lengthSelect();
   Client.lengthList();
+  Client.formlet();
+  Client.form();
   Password.upperCase();
   Password.punctuation();
   Password.numbers();

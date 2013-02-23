@@ -17,6 +17,10 @@ module View =
                     Div [
                         Label [Text "Password"]
                         Input [Type "text"; Id "password"]
+                        Label [Id "strengthLabel"] -< [Text "Strength: "]
+                        Div [Class "progress"; Style "width: 200px;"; Id "progressDiv"] -< [
+                            Div [Class "bar"; Id "progress"]
+                        ]
                     ]
                 ]
             ]
