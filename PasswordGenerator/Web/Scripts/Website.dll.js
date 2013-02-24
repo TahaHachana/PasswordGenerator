@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,Website,Password,Settings,WebSharper,Seq,Operators,List,Math,Number,Unchecked,SettingsFormlet,Client,Formlet,Data,Formlet1,Enhance,String,jQuery,Controls;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Website,Password,Settings,WebSharper,Seq,Operators,List,Math,Number,Unchecked,SettingsFormlet,Client,Formlet,Data,Formlet1,Enhance,String,Controls,jQuery;
  Runtime.Define(Global,{
   Website:{
    Password:{
@@ -361,7 +361,7 @@
      {
       return Formlet1.Run(function(settings)
       {
-       var password,_password_,f,folder,patternInput,x1,matchValue,f1,width,strength,cssClass;
+       var password,_password_,f,folder,x1,matchValue,f1;
        password=Password["generate'"](settings);
        _password_=(f=(folder=function(x)
        {
@@ -373,21 +373,16 @@
        {
         return Seq.fold(folder,"",list);
        }),f(password));
-       patternInput=(x1=(matchValue=Password.strength(password),matchValue.$==1?["Medium",50,"progress progress-warning"]:matchValue.$==2?["Strong",75,"progress progress-success"]:matchValue.$==3?["Best",100,"progress progress-info"]:["Weak",25,"progress progress-danger"]),(f1=Runtime.Tupled(function(tupledArg)
+       x1=(matchValue=Password.strength(password),matchValue.$==1?["Medium",50,"progress progress-warning"]:matchValue.$==2?["Strong",75,"progress progress-success"]:matchValue.$==3?["Best",100,"progress progress-info"]:["Weak",25,"progress progress-danger"]);
+       f1=Runtime.Tupled(function(tupledArg)
        {
-        var x,y,z;
-        x=tupledArg[0];
-        y=tupledArg[1];
-        z=tupledArg[2];
-        return[x,"width: "+Global.String(y)+"%;",z];
-       }),f1(x1)));
-       width=patternInput[1];
-       strength=patternInput[0];
-       cssClass=patternInput[2];
-       jQuery("#password").attr("value",_password_);
-       jQuery("#strengthLabel").text("Strength: "+strength);
-       jQuery("#progressDiv").attr("class",cssClass);
-       return jQuery("#progress").attr("style",width);
+        var strength,width,cssClass;
+        strength=tupledArg[0];
+        width=tupledArg[1];
+        cssClass=tupledArg[2];
+        return Client.updateView(_password_,strength,width,cssClass);
+       });
+       return f1(x1);
       },Client.form());
      }),
      lengthList:Runtime.Field(function()
@@ -433,6 +428,15 @@
       };
       return f(x);
      }),
+     updateView:function(password,strength,width,cssClass)
+     {
+      var _width_;
+      _width_="width: "+Global.String(width)+"%;";
+      jQuery("#password").attr("value",password);
+      jQuery("#strengthLabel").text("Strength: "+strength);
+      jQuery("#progressDiv").attr("class",cssClass);
+      return jQuery("#progress").attr("style",_width_);
+     },
      upperCaseCheckbox:Runtime.Field(function()
      {
       var x,f;
@@ -466,8 +470,8 @@
   Formlet1=Runtime.Safe(Formlet.Formlet);
   Enhance=Runtime.Safe(Formlet.Enhance);
   String=Runtime.Safe(Global.String);
-  jQuery=Runtime.Safe(Global.jQuery);
-  return Controls=Runtime.Safe(Formlet.Controls);
+  Controls=Runtime.Safe(Formlet.Controls);
+  return jQuery=Runtime.Safe(Global.jQuery);
  });
  Runtime.OnLoad(function()
  {

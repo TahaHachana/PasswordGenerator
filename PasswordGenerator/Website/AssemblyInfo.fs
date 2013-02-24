@@ -9,6 +9,6 @@ module AssemblyInfo =
     [<AssemblyFileVersion("0.1.0.0")>]
     [<AssemblyProduct("PasswordGenerator")>]
     [<AssemblyTitle("PasswordGenerator")>]
-    [<AssemblyVersion("0.1.1.0")>]
+    [<AssemblyVersion("0.1.2.0")>]
 
     do ()

@@ -60,21 +60,30 @@ module SettingsFormlet =
             |> Enhance.WithFormContainer
 
         [<JavaScript>]
+        let updateView password (strength, width, cssClass) =
+            let width' = "width: " + string width + "%;"
+            JQuery.Of("#password").Attr("value", password).Ignore
+            JQuery.Of("#strengthLabel").Text("Strength: " + strength).Ignore
+            JQuery.Of("#progressDiv").Attr("class", cssClass).Ignore
+            JQuery.Of("#progress").Attr("style", width').Ignore
+
+
+        [<JavaScript>]
         let formlet =
             Formlet.Run (fun settings ->
                 let password = Password.generate' settings
                 let password' = password |> List.fold (fun x y -> x + string y) ""
-                let strength, width, cssClass =
-                    match Password.strength password with
-                        | Password.Strengh.Weak   -> "Weak"  , 25 , "progress progress-danger"
-                        | Password.Strengh.Medium -> "Medium", 50 , "progress progress-warning"
-                        | Password.Strengh.Strong -> "Strong", 75 , "progress progress-success"
-                        | Password.Strengh.Best   -> "Best"  , 100, "progress progress-info"
-                    |> fun (x, y, z) -> x, "width: " + string y + "%;", z
-                JQuery.Of("#password").Attr("value", password').Ignore
-                JQuery.Of("#strengthLabel").Text("Strength: " + strength).Ignore
-                JQuery.Of("#progressDiv").Attr("class", cssClass).Ignore
-                JQuery.Of("#progress").Attr("style", width).Ignore
+                match Password.strength password with
+                    | Password.Strengh.Weak   -> "Weak"  , 25 , "progress progress-danger"
+                    | Password.Strengh.Medium -> "Medium", 50 , "progress progress-warning"
+                    | Password.Strengh.Strong -> "Strong", 75 , "progress progress-success"
+                    | Password.Strengh.Best   -> "Best"  , 100, "progress progress-info"
+                |> updateView password'
+//                    |> fun (x, y, z) -> x, "width: " + string y + "%;", z
+//                JQuery.Of("#password").Attr("value", password').Ignore
+//                JQuery.Of("#strengthLabel").Text("Strength: " + strength).Ignore
+//                JQuery.Of("#progressDiv").Attr("class", cssClass).Ignore
+//                JQuery.Of("#progress").Attr("style", width).Ignore
                 ) form
 
         type SettingsFormletViewer () =

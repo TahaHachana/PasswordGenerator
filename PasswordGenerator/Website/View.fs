@@ -22,6 +22,12 @@ module View =
                             Div [Class "bar"; Id "progress"]
                         ]
                     ]
+                    Div [
+                        Span [Class "pull-right"] -<
+                            [Text "Powered by "] -<
+                                [A [HRef "http://www.websharper.com/"; Target "_blank"] -<
+                                    [Text "WebSharper"]]
+                    ]
+                    Script [Src "../Scripts/GoogleAnalytics.js"]
                 ]
             ]
-                //SharedContent.analyticsScript
