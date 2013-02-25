@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,Website,Password,Settings,WebSharper,Seq,Operators,List,Math,Number,Unchecked,SettingsFormlet,Client,Formlet,Data,Formlet1,Enhance,String,Controls,jQuery;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Website,Password,Settings,WebSharper,Seq,Operators,ExtSharper,Random,List,Unchecked,Number,Math,SettingsFormlet,Client,Formlet,Data,Formlet1,Enhance,String,Controls,jQuery;
  Runtime.Define(Global,{
   Website:{
    Password:{
@@ -62,7 +62,7 @@
       return Seq.collect(function()
       {
        var item;
-       item=Password.random(0,chars.get_Length()-1);
+       item=Random.Next(0,chars.get_Length()-1);
        return[_chars_.get_Item(item)];
       },Operators.range(1,length));
      }));
@@ -104,19 +104,6 @@
     {
      return List.ofArray([126,96,33,64,35,36,37,94,38,42,40,41,45,95,43,61,34]);
     }),
-    random:function(lowerBound,upperBound)
-    {
-     var x,x1,f,f1;
-     x=Math.random()*(x1=upperBound-lowerBound+1,(f=function(value)
-     {
-      return Number(value);
-     },f(x1)));
-     f1=function(arg00)
-     {
-      return Math.floor(arg00);
-     };
-     return f1(x);
-    },
     remove:function(item,lst)
     {
      var f,predicate;
@@ -134,7 +121,7 @@
      return Seq.toList(Seq.delay(function()
      {
       var item,x;
-      item=Password.random(0,lst.get_Length()-1);
+      item=Random.Next(0,lst.get_Length()-1);
       x=lst.get_Item(item);
       return Seq.append([x],Seq.delay(function()
       {
@@ -459,10 +446,12 @@
   WebSharper=Runtime.Safe(Global.IntelliFactory.WebSharper);
   Seq=Runtime.Safe(WebSharper.Seq);
   Operators=Runtime.Safe(WebSharper.Operators);
+  ExtSharper=Runtime.Safe(Global.ExtSharper);
+  Random=Runtime.Safe(ExtSharper.Random);
   List=Runtime.Safe(WebSharper.List);
-  Math=Runtime.Safe(Global.Math);
-  Number=Runtime.Safe(Global.Number);
   Unchecked=Runtime.Safe(WebSharper.Unchecked);
+  Number=Runtime.Safe(Global.Number);
+  Math=Runtime.Safe(Global.Math);
   SettingsFormlet=Runtime.Safe(Website.SettingsFormlet);
   Client=Runtime.Safe(SettingsFormlet.Client);
   Formlet=Runtime.Safe(WebSharper.Formlet);

@@ -2,13 +2,9 @@
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.EcmaScript
+open ExtSharper
 
 module Password =
-
-    [<JavaScript>]
-    let random lowerBound upperBound =
-        Math.Random() * (upperBound - lowerBound + 1 |> float)
-        |> Math.Floor
 
     [<JavaScript>]
     let remove item lst = lst |> List.filter (fun x -> x <> item)
@@ -16,7 +12,7 @@ module Password =
     [<JavaScript>]
     let rec shuffle (lst : 'a list) = 
         [
-            let item = random 0 (lst.Length - 1)
+            let item = Random.Next(0, (lst.Length - 1))
             let x = lst.[item]
             yield x
             let lst' = remove x lst
@@ -29,7 +25,7 @@ module Password =
         let chars' = shuffle chars
         [
             for x in 1 .. length do
-                let item = random 0 (chars.Length - 1)
+                let item = Random.Next(0, (chars.Length - 1))
                 yield chars'.[item]
         ]
  

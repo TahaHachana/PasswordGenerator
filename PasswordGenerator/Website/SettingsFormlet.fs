@@ -9,23 +9,6 @@ module SettingsFormlet =
         open IntelliFactory.WebSharper.Formlet
         open IntelliFactory.WebSharper.JQuery
 
-//        type Settings =
-//            {
-//                Length    : int
-//                UpperCase : bool
-//                Numbers   : bool
-//                Other     : bool
-//            }
-//
-//            [<JavaScript>]
-//            static member Create length upperCase numbers other =
-//                {
-//                    Length    = length
-//                    UpperCase = upperCase
-//                    Numbers   = numbers
-//                    Other     = other
-//                }
-
         [<JavaScript>]
         let lengthList = [6 .. 32] |> List.map (fun x -> string x, x)
 
@@ -67,7 +50,6 @@ module SettingsFormlet =
             JQuery.Of("#progressDiv").Attr("class", cssClass).Ignore
             JQuery.Of("#progress").Attr("style", width').Ignore
 
-
         [<JavaScript>]
         let formlet =
             Formlet.Run (fun settings ->
@@ -79,11 +61,6 @@ module SettingsFormlet =
                     | Password.Strengh.Strong -> "Strong", 75 , "progress progress-success"
                     | Password.Strengh.Best   -> "Best"  , 100, "progress progress-info"
                 |> updateView password'
-//                    |> fun (x, y, z) -> x, "width: " + string y + "%;", z
-//                JQuery.Of("#password").Attr("value", password').Ignore
-//                JQuery.Of("#strengthLabel").Text("Strength: " + strength).Ignore
-//                JQuery.Of("#progressDiv").Attr("class", cssClass).Ignore
-//                JQuery.Of("#progress").Attr("style", width).Ignore
                 ) form
 
         type SettingsFormletViewer () =
