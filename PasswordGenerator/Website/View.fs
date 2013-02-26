@@ -1,12 +1,16 @@
 ﻿namespace Website
 
 open IntelliFactory.Html
+open ExtSharper.Server
 open Model
 
 module View =
 
+    let mainTemplate = Skin.MakeDefaultTemplate "~/Main.html" Skin.LoadFrequency.Once 
+    let withMainTemplate = Skin.WithTemplate<Action> mainTemplate
+    
     let homeView =
-        Skin.withMainTemplate HomeContent.title HomeContent.metaDescription <| fun ctx ->
+        withMainTemplate HomeContent.title HomeContent.metaDescription <| fun ctx ->
             [
                 HomeContent.forkme
                 Div [Class "container"] -< [

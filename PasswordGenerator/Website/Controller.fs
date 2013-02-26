@@ -6,8 +6,4 @@ open View
 
 module Controller =
 
-    let controller =
-
-        let handle = function Home  -> homeView
-
-        { Handle = handle }
+    let controller = { Handle = function Home -> homeView }

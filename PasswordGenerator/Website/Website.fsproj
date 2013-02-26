@@ -38,9 +38,8 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Password.fs" />
     <Compile Include="SettingsFormlet.fs" />
-    <Compile Include="Model.fs" />
     <Compile Include="HomeContent.fs" />
-    <Compile Include="Skin.fs" />
+    <Compile Include="Model.fs" />
     <Compile Include="View.fs" />
     <Compile Include="Controller.fs" />
     <Compile Include="Site.fs" />
@@ -48,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ExtSharper">
-      <HintPath>..\..\packages\ExtSharper.0.1.4\lib\Net40\ExtSharper.dll</HintPath>
+      <HintPath>..\..\packages\ExtSharper.0.1.6\lib\Net40\ExtSharper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
