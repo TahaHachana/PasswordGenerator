@@ -1,7 +1,7 @@
 ﻿namespace Website
 
 open IntelliFactory.Html
-open ExtSharper.Server
+open ExtSharper
 open Model
 
 module View =

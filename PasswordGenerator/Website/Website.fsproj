@@ -47,7 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ExtSharper">
-      <HintPath>..\..\packages\ExtSharper.0.1.6\lib\Net40\ExtSharper.dll</HintPath>
+      <HintPath>..\..\packages\ExtSharper.0.1.13\lib\Net40\ExtSharper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ExtSharper.Random">
+      <HintPath>..\..\packages\ExtSharper.Random.1.0.0\lib\Net40\ExtSharper.Random.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />

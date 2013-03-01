@@ -1,6 +1,6 @@
 (function()
 {
- var Global=this,Runtime=this.IntelliFactory.Runtime,Website,Password,Settings,WebSharper,Seq,Operators,ExtSharper,Client,Random,List,Unchecked,Number,Math,SettingsFormlet,Client1,Formlet,Data,Formlet1,Enhance,String,Controls,jQuery;
+ var Global=this,Runtime=this.IntelliFactory.Runtime,Website,Password,Settings,WebSharper,Seq,Operators,ExtSharper,Random,Random1,List,Unchecked,Number,Math,SettingsFormlet,Client,Formlet,Data,Formlet1,Enhance,String,Controls,jQuery;
  Runtime.Define(Global,{
   Website:{
    Password:{
@@ -62,7 +62,7 @@
       return Seq.collect(function()
       {
        var item;
-       item=Random.Next2(0,chars.get_Length()-1);
+       item=Random1.Next2(0,chars.get_Length()-1);
        return[_chars_.get_Item(item)];
       },Operators.range(1,length));
      }));
@@ -121,7 +121,7 @@
      return Seq.toList(Seq.delay(function()
      {
       var item,x;
-      item=Random.Next2(0,lst.get_Length()-1);
+      item=Random1.Next2(0,lst.get_Length()-1);
       x=lst.get_Item(item);
       return Seq.append([x],Seq.delay(function()
       {
@@ -310,7 +310,7 @@
      SettingsFormletViewer:Runtime.Class({
       get_Body:function()
       {
-       return Client1.formlet();
+       return Client.formlet();
       }
      }),
      form:Runtime.Field(function()
@@ -334,7 +334,7 @@
          };
         };
        };
-      },Formlet1.Return(x2)),Client1.lengthSelect()),Client1.upperCaseCheckbox()),Client1.numbersCheckbox()),Client1.otherCheckbox()),(f=function(formlet)
+      },Formlet1.Return(x2)),Client.lengthSelect()),Client.upperCaseCheckbox()),Client.numbersCheckbox()),Client.otherCheckbox()),(f=function(formlet)
       {
        return Enhance.WithSubmitAndResetButtons(formlet);
       },f(x1)));
@@ -367,10 +367,10 @@
         strength=tupledArg[0];
         width=tupledArg[1];
         cssClass=tupledArg[2];
-        return Client1.updateView(_password_,strength,width,cssClass);
+        return Client.updateView(_password_,strength,width,cssClass);
        });
        return f1(x1);
-      },Client1.form());
+      },Client.form());
      }),
      lengthList:Runtime.Field(function()
      {
@@ -388,7 +388,7 @@
      lengthSelect:Runtime.Field(function()
      {
       var x,f;
-      x=Controls.Select(8,Client1.lengthList());
+      x=Controls.Select(8,Client.lengthList());
       f=function(formlet)
       {
        return Enhance.WithTextLabel("Length",formlet);
@@ -447,14 +447,14 @@
   Seq=Runtime.Safe(WebSharper.Seq);
   Operators=Runtime.Safe(WebSharper.Operators);
   ExtSharper=Runtime.Safe(Global.ExtSharper);
-  Client=Runtime.Safe(ExtSharper.Client);
-  Random=Runtime.Safe(Client.Random);
+  Random=Runtime.Safe(ExtSharper.Random);
+  Random1=Runtime.Safe(Random.Random);
   List=Runtime.Safe(WebSharper.List);
   Unchecked=Runtime.Safe(WebSharper.Unchecked);
   Number=Runtime.Safe(Global.Number);
   Math=Runtime.Safe(Global.Math);
   SettingsFormlet=Runtime.Safe(Website.SettingsFormlet);
-  Client1=Runtime.Safe(SettingsFormlet.Client);
+  Client=Runtime.Safe(SettingsFormlet.Client);
   Formlet=Runtime.Safe(WebSharper.Formlet);
   Data=Runtime.Safe(Formlet.Data);
   Formlet1=Runtime.Safe(Formlet.Formlet);
@@ -465,13 +465,13 @@
  });
  Runtime.OnLoad(function()
  {
-  Client1.upperCaseCheckbox();
-  Client1.otherCheckbox();
-  Client1.numbersCheckbox();
-  Client1.lengthSelect();
-  Client1.lengthList();
-  Client1.formlet();
-  Client1.form();
+  Client.upperCaseCheckbox();
+  Client.otherCheckbox();
+  Client.numbersCheckbox();
+  Client.lengthSelect();
+  Client.lengthList();
+  Client.formlet();
+  Client.form();
   Password.upperCase();
   Password.punctuation();
   Password.numbers();

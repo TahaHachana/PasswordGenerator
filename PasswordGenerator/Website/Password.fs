@@ -2,7 +2,7 @@
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.EcmaScript
-open ExtSharper.Client
+open ExtSharper.Random
 
 module Password =
 
